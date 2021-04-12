@@ -1,12 +1,12 @@
 # com-port-monitor
 
-##install
+## install
 
 ```bash
 go get github.com/MaksimSvinin/com-port-monitor
 ```
 
-##usage
+## usage
 
 ```bash
 cd cd $GOPATH/bin
