@@ -22,7 +22,7 @@ func main() {
 
 	ctx := context.Background()
 	inputCh := make(chan string)
-	writeCh := make(chan tui.Message)
+	writeCh := make(chan tui.Message, 10)
 
 	sidebarData := tui.SidebarData{
 		PortName: *port,
