@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	serial2 "github.com/MaksimSvinin/com-port-monitor/serial"
 	"github.com/MaksimSvinin/com-port-monitor/tui"
 	"log"
@@ -53,10 +52,6 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			writeCh <- tui.Message{
-				Message: fmt.Sprintf("<: %s", m),
-				Style:   "Green",
-			}
 		}
 	}()
 
@@ -74,8 +69,8 @@ func main() {
 			}
 			if len(buf) != 0 {
 				writeCh <- tui.Message{
-					Message: fmt.Sprintf(">: %s", buf),
-					Style:   "Red",
+					Message: string(buf),
+					Style:   "Green",
 				}
 			}
 		}

@@ -58,9 +58,6 @@ func (s *Serial) Read() ([]byte, error) {
 		}
 		buf = buf[:n]
 		for _, b := range buf {
-			if b == '\n' {
-				return outBuf, nil
-			}
 			outBuf = append(outBuf, b)
 		}
 	}
