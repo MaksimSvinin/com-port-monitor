@@ -53,6 +53,8 @@ func (s *Serial) Read() ([]byte, error) {
 		n, err := s.conn.Read(buf)
 		if err != nil && err != io.EOF {
 			return nil, errors.New(fmt.Sprintf("Error reading from serial port: %s", err))
+		} else if err == io.EOF {
+			return outBuf, nil
 		}
 		buf = buf[:n]
 		for _, b := range buf {
