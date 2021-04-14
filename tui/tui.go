@@ -11,11 +11,6 @@ type Tui struct {
 	ui tui.UI
 }
 
-type Message struct {
-	Message string
-	Style   string
-}
-
 type SidebarData struct {
 	PortName string
 	BaudRate uint
@@ -23,7 +18,7 @@ type SidebarData struct {
 	StopBits uint
 }
 
-func NewUi(sidebarData SidebarData, inputCh chan string, writeCh chan Message) *Tui {
+func NewUi(sidebarData SidebarData, inputCh chan string, writeCh chan string) *Tui {
 	sidebar := tui.NewVBox(
 		tui.NewLabel("Connect info"),
 		tui.NewLabel(fmt.Sprintf("port: %s", sidebarData.PortName)),
@@ -35,6 +30,11 @@ func NewUi(sidebarData SidebarData, inputCh chan string, writeCh chan Message) *
 	sidebar.SetBorder(true)
 
 	history := tui.NewVBox()
+	historyLabel := tui.NewLabel("")
+	history.Append(tui.NewHBox(
+		historyLabel,
+	))
+	historyLabel.SetStyleName("Green")
 
 	historyScroll := tui.NewScrollArea(history)
 	historyScroll.SetAutoscrollToBottom(true)
@@ -82,13 +82,11 @@ func NewUi(sidebarData SidebarData, inputCh chan string, writeCh chan Message) *
 		for {
 			m := <-writeCh
 			ui.Update(func() {
-				label := tui.NewLabel(m.Message)
-				label.SetStyleName(m.Style)
+				if len(historyLabel.Text()) > 1000 {
+					historyLabel.SetText(historyLabel.Text()[10:])
+				}
+				historyLabel.SetText(historyLabel.Text() + m)
 
-				history.Append(tui.NewHBox(
-					label,
-					tui.NewSpacer(),
-				))
 			})
 		}
 	}()

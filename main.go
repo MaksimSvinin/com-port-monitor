@@ -21,7 +21,7 @@ func main() {
 
 	ctx := context.Background()
 	inputCh := make(chan string)
-	writeCh := make(chan tui.Message, 10)
+	writeCh := make(chan string, 10)
 
 	sidebarData := tui.SidebarData{
 		PortName: *port,
@@ -68,10 +68,7 @@ func main() {
 				log.Fatal(err)
 			}
 			if len(buf) != 0 {
-				writeCh <- tui.Message{
-					Message: string(buf),
-					Style:   "Green",
-				}
+				writeCh <- string(buf)
 			}
 		}
 	}()

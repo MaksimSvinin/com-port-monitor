@@ -46,21 +46,13 @@ func (s *Serial) Write(data string) error {
 }
 
 func (s *Serial) Read() ([]byte, error) {
-	var outBuf []byte
-
-	for {
-		buf := make([]byte, 100)
-		n, err := s.conn.Read(buf)
-		if err != nil && err != io.EOF {
-			return nil, errors.New(fmt.Sprintf("Error reading from serial port: %s", err))
-		} else if err == io.EOF {
-			return outBuf, nil
-		}
-		buf = buf[:n]
-		for _, b := range buf {
-			outBuf = append(outBuf, b)
-		}
+	buf := make([]byte, 100)
+	n, err := s.conn.Read(buf)
+	if err != nil && err != io.EOF {
+		return nil, errors.New(fmt.Sprintf("Error reading from serial port: %s", err))
 	}
+	buf = buf[:n]
+	return buf, nil
 }
 
 func (s *Serial) Close() {
