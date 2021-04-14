@@ -82,8 +82,9 @@ func NewUi(sidebarData SidebarData, inputCh chan string, writeCh chan string) *T
 		for {
 			m := <-writeCh
 			ui.Update(func() {
-				if len(historyLabel.Text()) > 5000 {
-					historyLabel.SetText(historyLabel.Text()[10:])
+				historyLabelLen := len(historyLabel.Text())
+				if historyLabelLen > 50000 {
+					historyLabel.SetText(historyLabel.Text()[historyLabelLen-50000:])
 				}
 				historyLabel.SetText(historyLabel.Text() + m)
 
